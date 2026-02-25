@@ -3,10 +3,6 @@ import mediapipe as mp
 import numpy as np
 import tkinter as tk
 from PIL import Image, ImageTk
-
-# =============================
-# MEDIAPIPE HAND SETUP
-# =============================
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(
     max_num_hands=1,
@@ -15,10 +11,6 @@ hands = mp_hands.Hands(
 )
 
 mp_draw = mp.solutions.drawing_utils
-
-# =============================
-# CAMERA
-# =============================
 cap = cv2.VideoCapture(0)
 
 canvas = None
@@ -26,10 +18,6 @@ prev_x, prev_y = 0, 0
 
 draw_color = (255, 255, 255)   # white pen
 erase_color = (0, 0, 0)         # erase background
-
-# =============================
-# TKINTER WINDOW
-# =============================
 root = tk.Tk()
 root.title("Gesture Notebook AI")
 
@@ -42,9 +30,6 @@ notebook_label.pack(side="left")
 webcam_label = tk.Label(frame)
 webcam_label.pack(side="right")
 
-# =============================
-# FINGER DETECTION
-# =============================
 def fingers_up(hand):
 
     tips = [8, 12, 16, 20]
@@ -57,11 +42,6 @@ def fingers_up(hand):
             fingers.append(0)
 
     return fingers
-
-
-# =============================
-# MAIN LOOP
-# =============================
 def update():
 
     global canvas, prev_x, prev_y
@@ -94,11 +74,7 @@ def update():
 
             x = int(hand.landmark[8].x * w)
             y = int(hand.landmark[8].y * h)
-
-            # ================= DRAW MODE =================
             if index_up and not fist:
-
-                # pen cursor
                 cv2.circle(frame_cam, (x, y), 8, (255, 255, 255), -1)
 
                 if prev_x == 0 and prev_y == 0:
@@ -113,11 +89,7 @@ def update():
                 )
 
                 prev_x, prev_y = x, y
-
-            # ================= ERASER MODE =================
             elif fist:
-
-                # erase canvas
                 cv2.circle(
                     canvas,
                     (x, y),
@@ -125,8 +97,6 @@ def update():
                     erase_color,
                     -1
                 )
-
-                # red eraser cursor
                 cv2.circle(
                     frame_cam,
                     (x, y),
@@ -139,8 +109,6 @@ def update():
 
             else:
                 prev_x, prev_y = 0, 0
-
-    # ================= DISPLAY =================
     notebook_view = canvas.copy()
 
     notebook_rgb = cv2.cvtColor(
@@ -168,10 +136,5 @@ def update():
     webcam_label.image = webcam_img
 
     root.after(10, update)
-
-
-# =============================
-# START APPLICATION
-# =============================
 update()
 root.mainloop()
