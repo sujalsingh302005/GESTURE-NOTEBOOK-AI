@@ -175,7 +175,7 @@ MIT License — Free to use and modify.
 
 ## 👨‍💻 Author
 
-**Your Name**
+**SUJAL SINGH**
 B.Tech Student — DIT University, Dehradun
 
 ---
